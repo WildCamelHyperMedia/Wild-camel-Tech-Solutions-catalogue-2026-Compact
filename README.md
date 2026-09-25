@@ -4,11 +4,13 @@ The compact Activations deck as a web app: 191 ideas across Physical, Hybrid and
 
 Static site, no build step, no server: `index.html`, `style.css`, `app.js`, the data in `data/catalogue.js`, pictures in `img/`. It runs on GitHub Pages as is, and also opens straight from this folder.
 
-## Publish on GitHub Pages
+## Live
 
-1. Put these files at the root of a **public** repository (free GitHub Pages only serves public repos).
-2. Repository → Settings → Pages → Source: *Deploy from a branch*, branch `main`, folder `/ (root)`.
-3. The site appears at `https://<account>.github.io/<repository>/` within a minute or two.
+https://wildcamelhypermedia.github.io/Wild-camel-Tech-Solutions-catalogue-2026-Compact-/ — GitHub Pages, from the `main` branch of this repository (root folder). Renaming the repository moves the address to `https://wildcamelhypermedia.github.io/<new name>/`.
+
+## Publishing an update
+
+The zip of this folder lives in the drive folder *Solutions Catalogue 2026*; `_deploy/publish.sh` beside it commits the zip's contents and pushes them here (token in `_deploy/github_token.txt`, repository address in `_deploy/repo.txt`). GitHub Pages rebuilds in about a minute.
 
 ## Links
 
