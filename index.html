@@ -21,7 +21,7 @@
     <div class="fams"><span class="fam-P">Physical</span><span class="dot">·</span><span class="fam-H">Hybrid</span><span class="dot">·</span><span class="fam-D">Digital</span></div>
     <h1 class="head">Activations</h1>
     <p class="lead"><span id="cover-count">191</span> ideas for spaces, events and screens. One picture and one line each.</p>
-    <p style="margin:26px 0 0"><a class="go" href="#catalogue" id="go">Browse the catalogue <span aria-hidden="true">↓</span></a></p>
+    <p style="margin:26px 0 0"><a class="btn hot go" href="#catalogue" id="go">Browse the catalogue <span aria-hidden="true">↓</span></a></p>
     <div class="cvrow"><span class="cv mono">Concept visual</span></div>
     <div class="foot">
       <span class="mono light">rudy@wildcamel.tv &nbsp;&nbsp;·&nbsp;&nbsp; www.wildcamel.tv</span>
@@ -30,37 +30,45 @@
   </div>
 </header>
 
-<nav class="bar" id="bar" aria-label="Filters">
+<nav class="bar" id="bar" aria-label="Search and filters">
   <div class="wrap">
     <div class="row1">
       <a class="brand" href="#top"><img src="img/ui/camel.png" alt="" width="266" height="423"><span>Wild Camel &nbsp;·&nbsp; Activations</span></a>
-      <label class="search"><span class="mono" style="font-size:10px">Search</span><input id="q" type="search" placeholder="Name, idea, place, code…" autocomplete="off" aria-label="Search the catalogue"><button class="clear-q" id="clear-q" type="button" aria-label="Clear search" hidden>×</button></label>
-      <span class="count" id="count"><b>191</b> of 191</span>
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Search ideas, places, codes…" autocomplete="off" aria-label="Search the catalogue"><button class="clear-q" id="clear-q" type="button" aria-label="Clear search" hidden>×</button></label>
       <button class="btn" id="open-short" type="button">Shortlist <span class="n" id="short-n">0</span></button>
-      <button class="btn tog" id="tog" type="button" aria-expanded="false" aria-controls="row2">Filters</button>
+    </div>
+    <div class="row2">
+      <div class="tabs" data-group="fam" role="group" aria-label="Family">
+        <button class="tab" type="button" data-v="" aria-pressed="true">All<span class="long">&nbsp;ideas</span></button>
+        <button class="tab fam-P" type="button" data-v="P" aria-pressed="false"><span class="dot"></span>Physical</button>
+        <button class="tab fam-H" type="button" data-v="H" aria-pressed="false"><span class="dot"></span>Hybrid</button>
+        <button class="tab fam-D" type="button" data-v="D" aria-pressed="false"><span class="dot"></span>Digital</button>
+      </div>
+      <span class="count" id="count"><b>191</b> ideas</span>
+      <button class="btn" id="tog" type="button" aria-expanded="false" aria-controls="fpanel">Filters <span class="n" id="filt-n" hidden>0</span></button>
       <button class="btn" id="clear" type="button" hidden>Clear</button>
     </div>
-    <div class="row2" id="row2">
-      <div class="grp" data-group="fam"><span class="lab">Family</span>
-        <button class="chip fam-P" type="button" data-v="P" aria-pressed="false">Physical</button>
-        <button class="chip fam-H" type="button" data-v="H" aria-pressed="false">Hybrid</button>
-        <button class="chip fam-D" type="button" data-v="D" aria-pressed="false">Digital</button>
-      </div>
-      <div class="grp"><span class="lab">Category</span><span class="sel"><select id="cat" aria-label="Category"><option value="">All categories</option></select></span></div>
-      <div class="grp" data-group="scale"><span class="lab">Scale</span></div>
-      <div class="grp" data-group="lead"><span class="lab">Lead time</span>
-        <button class="chip" type="button" data-v="6" aria-pressed="false">Up to 6 weeks</button>
-        <button class="chip" type="button" data-v="10" aria-pressed="false">6–10 weeks</button>
-        <button class="chip" type="button" data-v="11" aria-pressed="false">Over 10 weeks</button>
-      </div>
-      <div class="grp" data-group="tag"><span class="lab">Status</span>
-        <button class="chip" type="button" data-v="S" aria-pressed="false">Signature concepts</button>
-        <button class="chip" type="button" data-v="F" aria-pressed="false">Proven formats</button>
-        <button class="chip" type="button" data-v="D" aria-pressed="false">Delivered work</button>
-      </div>
-    </div>
+    <div class="active" id="active" hidden></div>
   </div>
 </nav>
+<div class="fscrim" id="fscrim" hidden></div>
+  <div class="fpanel" id="fpanel" hidden>
+    <div class="top"><h3 class="head">Filters</h3><button class="x" id="fclose" type="button" aria-label="Close filters">×</button></div>
+    <div class="in">
+      <div class="grp wide" data-group="cat"><h4>Category <small id="cat-hint"></small></h4><div class="chips" id="cat-chips"></div></div>
+      <div class="grp" data-group="scale"><h4>Scale</h4><div class="chips" id="scale-chips"></div></div>
+      <div class="grp" data-group="lead"><h4>Typical lead time</h4><div class="chips">
+        <button class="chip" type="button" data-v="6" aria-pressed="false">Up to 6 weeks</button>
+        <button class="chip" type="button" data-v="10" aria-pressed="false">6–10 weeks</button>
+        <button class="chip" type="button" data-v="11" aria-pressed="false">Over 10 weeks</button></div></div>
+      <div class="grp" data-group="tag"><h4>Status</h4><div class="chips">
+        <button class="chip" type="button" data-v="S" aria-pressed="false">Signature concepts</button>
+        <button class="chip" type="button" data-v="F" aria-pressed="false">Proven formats</button>
+        <button class="chip" type="button" data-v="D" aria-pressed="false">Delivered work</button></div></div>
+    </div>
+    <div class="foot"><span class="count" id="fcount"><b>191</b> ideas</span><button class="btn" id="fclear" type="button">Clear filters</button><button class="btn solid" id="fdone" type="button">Show ideas</button></div>
+  </div>
+
 
 <main>
   <section class="section wrap" id="contents">
@@ -89,7 +97,7 @@
   <section class="wrap" id="catalogue" aria-live="polite"></section>
   <div class="empty" id="empty" hidden>
     <p>Nothing matches these filters</p>
-    <button class="btn hot" type="button" id="empty-clear">Clear filters</button>
+    <button class="btn solid" type="button" id="empty-clear">Clear all filters</button>
   </div>
 
   <footer class="foot wrap">

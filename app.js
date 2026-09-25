@@ -16,13 +16,13 @@
   $("cover-count").textContent = ALL.length;
 
   // ---------- filter state ----------
-  var st = { fam: {}, cat: "", scale: {}, lead: {}, tag: {}, q: "" };
+  var st = { fam: {}, cat: {}, scale: {}, lead: {}, tag: {}, q: "" };
   var leadBucket = function (e) { return e.leadMax <= 6 ? "6" : e.leadMax <= 10 ? "10" : "11"; };
   var any = function (o) { for (var k in o) if (o[k]) return true; return false; };
   var words = function (q) { return q.toLowerCase().split(/\s+/).filter(Boolean); };
   function matches(e) {
     if (any(st.fam) && !st.fam[e.family]) return false;
-    if (st.cat && e.category !== st.cat) return false;
+    if (any(st.cat) && !st.cat[e.category]) return false;
     if (any(st.scale) && !st.scale[e.scale]) return false;
     if (any(st.lead) && !st.lead[leadBucket(e)]) return false;
     if (any(st.tag) && !(st.tag[e.tag] || (st.tag.D && e.tag === "P"))) return false;
@@ -33,7 +33,9 @@
     }
     return true;
   }
-  var isFiltered = function () { return any(st.fam) || !!st.cat || any(st.scale) || any(st.lead) || any(st.tag) || !!st.q; };
+  var isFiltered = function () { return any(st.fam) || any(st.cat) || any(st.scale) || any(st.lead) || any(st.tag) || !!st.q; };
+  var nFilters = function () { return keys(st.cat).length + keys(st.scale).length + keys(st.lead).length + keys(st.tag).length; };
+  var keys = function (o) { return Object.keys(o).filter(function (k) { return o[k]; }); };
 
   // ---------- build the page ----------
   var catId = function (name) { return "c-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); };
@@ -43,7 +45,7 @@
     var toc = "";
     DATA.families.forEach(function (f) {
       var n = f.cats.reduce(function (a, c) { return a + c.entries.length; }, 0);
-      toc += '<div class="col"><h3 class="fam-' + f.letter + '"><span class="sq"></span>' + esc(f.no) + " &nbsp;" + esc(f.key) + "<small>" + n + " ideas</small></h3>";
+      toc += '<div class="col"><h3 class="fam-' + f.letter + '"><span><span class="sq"></span>' + esc(f.key) + "</span><small>" + esc(f.sub) + " &nbsp;·&nbsp; " + n + " ideas</small></h3>";
       f.cats.forEach(function (c) {
         toc += '<a href="#' + catId(c.name) + '" data-cat="' + esc(c.name) + '"><img src="img/cards/' + c.entries[0].code + '.jpg" alt="" loading="lazy" width="640" height="400"><span class="t">' + esc(c.name) + '</span><span class="n">' + c.entries.length + "</span></a>";
       });
@@ -55,15 +57,12 @@
     // production tiles
     $("tiles").innerHTML = DATA.tiles.map(function (t) { return '<div class="tile"><img src="' + t.file + '" alt="Frame from our work: ' + esc(t.label.toLowerCase()) + '" loading="lazy" width="1000" height="465"><span class="tilechip">' + esc(t.label) + "</span></div>"; }).join("");
 
-    // category select
-    var sel = $("cat");
+    // category chips (each carries its family colour) and scale chips, in the filter panel
+    var cg = $("cat-chips");
     DATA.families.forEach(function (f) {
-      var g = document.createElement("optgroup"); g.label = f.no + "  " + f.key; g.dataset.fam = f.letter;
-      f.cats.forEach(function (c) { var o = document.createElement("option"); o.value = c.name; o.textContent = c.name; g.appendChild(o); });
-      sel.appendChild(g);
+      f.cats.forEach(function (c) { var b = document.createElement("button"); b.type = "button"; b.className = "chip fam-" + f.letter; b.dataset.v = c.name; b.dataset.fam = f.letter; b.setAttribute("aria-pressed", "false"); b.innerHTML = '<span class="dot"></span>' + esc(c.name) + ' <span style="opacity:.55">' + c.entries.length + "</span>"; cg.appendChild(b); });
     });
-    // scale chips
-    var sg = document.querySelector('[data-group="scale"]');
+    var sg = $("scale-chips");
     SCALES.forEach(function (s) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.v = s; b.setAttribute("aria-pressed", "false"); b.textContent = s; sg.appendChild(b); });
 
     // catalogue
@@ -103,24 +102,40 @@
       sec.querySelector("[data-n]").textContent = n + (n === 1 ? " idea" : " ideas");
     });
     document.querySelectorAll(".family").forEach(function (f) { f.hidden = f.querySelectorAll(".cat:not([hidden])").length === 0; });
-    $("count").innerHTML = "<b>" + VISIBLE.length + "</b> of " + ALL.length;
+    var countHTML = isFiltered() ? "<b>" + VISIBLE.length + "</b> of " + ALL.length + " ideas" : "<b>" + ALL.length + "</b> ideas";
+    $("count").innerHTML = countHTML; $("fcount").innerHTML = countHTML;
+    $("fdone").textContent = VISIBLE.length ? "Show " + VISIBLE.length + (VISIBLE.length === 1 ? " idea" : " ideas") : "Nothing matches";
     $("empty").hidden = VISIBLE.length > 0;
-    $("clear").hidden = !isFiltered(); $("bar").classList.toggle("filtered", isFiltered());
+    $("clear").hidden = !isFiltered();
     $("clear-q").hidden = !st.q;
-    // chips + select reflect the state
-    document.querySelectorAll(".grp[data-group] .chip").forEach(function (b) { var g = b.closest(".grp").dataset.group; b.setAttribute("aria-pressed", st[g][b.dataset.v] ? "true" : "false"); });
-    var sel = $("cat"); sel.value = st.cat; sel.classList.toggle("on", !!st.cat);
-    Array.prototype.forEach.call(sel.querySelectorAll("optgroup"), function (g) { g.hidden = any(st.fam) && !st.fam[g.dataset.fam]; });
+    var nf = nFilters(); $("filt-n").hidden = nf === 0; $("filt-n").textContent = nf; $("tog").classList.toggle("hot", nf > 0);
+    // tabs and chips reflect the state
+    document.querySelectorAll('.tabs[data-group="fam"] .tab').forEach(function (b) { b.setAttribute("aria-pressed", (b.dataset.v ? !!st.fam[b.dataset.v] : !any(st.fam)) ? "true" : "false"); });
+    document.querySelectorAll(".grp[data-group] .chip").forEach(function (b) { var g = b.closest(".grp").dataset.group; b.setAttribute("aria-pressed", st[g][b.dataset.v] ? "true" : "false"); if (b.dataset.fam) b.hidden = any(st.fam) && !st.fam[b.dataset.fam]; });
+    var famName = keys(st.fam).map(function (l) { return FAMN[l]; }).join(", ");
+    $("cat-hint").textContent = famName ? "in " + famName : "";
+    paintActive();
     writeURL();
   }
-  function clearAll(keepQ) { st.fam = {}; st.cat = ""; st.scale = {}; st.lead = {}; st.tag = {}; if (!keepQ) { st.q = ""; $("q").value = ""; } apply(); }
+  function clearAll(keepQ) { st.fam = {}; st.cat = {}; st.scale = {}; st.lead = {}; st.tag = {}; if (!keepQ) { st.q = ""; $("q").value = ""; } apply(); }
+  // the active secondary filters, as removable chips under the bar
+  var LEADN = { "6": "Up to 6 weeks", "10": "6–10 weeks", "11": "Over 10 weeks" }, TAGN = { S: "Signature concepts", F: "Proven formats", D: "Delivered work" };
+  function paintActive() {
+    var items = [];
+    keys(st.cat).forEach(function (v) { items.push(["cat", v, v]); });
+    keys(st.scale).forEach(function (v) { items.push(["scale", v, v]); });
+    keys(st.lead).forEach(function (v) { items.push(["lead", v, LEADN[v] || v]); });
+    keys(st.tag).forEach(function (v) { items.push(["tag", v, TAGN[v] || v]); });
+    if (st.q) items.push(["q", st.q, "“" + st.q + "”"]);
+    var el = $("active"); el.hidden = items.length === 0;
+    el.innerHTML = items.length ? '<span class="lab">Filtered by</span>' + items.map(function (it) { return '<button class="chip" type="button" data-rmf="' + esc(it[0]) + '" data-v="' + esc(it[1]) + '" aria-label="Remove filter ' + esc(it[2]) + '">' + esc(it[2]) + ' <span class="x">×</span></button>'; }).join("") : "";
+  }
 
   // filters in the address bar, so a filtered view can be sent as a link
-  var keys = function (o) { return Object.keys(o).filter(function (k) { return o[k]; }); };
   function writeURL() {
     var p = [];
     if (any(st.fam)) p.push("f=" + keys(st.fam).join(","));
-    if (st.cat) p.push("c=" + encodeURIComponent(st.cat));
+    if (any(st.cat)) p.push("c=" + keys(st.cat).map(encodeURIComponent).join(","));
     if (any(st.scale)) p.push("s=" + keys(st.scale).join(","));
     if (any(st.lead)) p.push("l=" + keys(st.lead).join(","));
     if (any(st.tag)) p.push("t=" + keys(st.tag).join(","));
@@ -130,32 +145,55 @@
   }
   function readURL() {
     var q = new URLSearchParams(location.search), set = function (o, v) { (v || "").split(",").forEach(function (x) { if (x) o[x] = true; }); };
-    set(st.fam, q.get("f")); st.cat = q.get("c") || ""; set(st.scale, q.get("s")); set(st.lead, q.get("l")); set(st.tag, q.get("t")); st.q = q.get("q") || ""; $("q").value = st.q;
+    set(st.fam, q.get("f")); set(st.cat, q.get("c")); set(st.scale, q.get("s")); set(st.lead, q.get("l")); set(st.tag, q.get("t")); st.q = q.get("q") || ""; $("q").value = st.q;
     return q;
   }
 
   // ---------- events: filters ----------
+  var FAMN = {}; DATA.families.forEach(function (f) { FAMN[f.letter] = f.key.charAt(0) + f.key.slice(1).toLowerCase(); });
+  var CATFAM = {}; ALL.forEach(function (e) { CATFAM[e.category] = e.family; });
+  document.querySelector('.tabs[data-group="fam"]').addEventListener("click", function (ev) {
+    var b = ev.target.closest(".tab"); if (!b) return;
+    st.fam = {}; if (b.dataset.v) st.fam[b.dataset.v] = true;
+    // drop category picks that belong to another family
+    keys(st.cat).forEach(function (c) { if (any(st.fam) && !st.fam[CATFAM[c]]) delete st.cat[c]; });
+    apply();
+  });
   document.querySelectorAll(".grp[data-group]").forEach(function (g) {
     g.addEventListener("click", function (ev) {
       var b = ev.target.closest(".chip"); if (!b) return;
       var o = st[g.dataset.group], v = b.dataset.v; o[v] = !o[v];
-      if (g.dataset.group === "fam" && st.cat && any(st.fam)) { var e0 = ALL.filter(function (e) { return e.category === st.cat; })[0]; if (e0 && !st.fam[e0.family]) st.cat = ""; }
       apply();
     });
   });
-  $("cat").addEventListener("change", function () { st.cat = this.value; apply(); });
+  $("active").addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-rmf]"); if (!b) return;
+    if (b.dataset.rmf === "q") { st.q = ""; $("q").value = ""; } else delete st[b.dataset.rmf][b.dataset.v];
+    apply();
+  });
+  function openFilters(open) {
+    var p = $("fpanel");
+    if (open && window.innerWidth > 860) { var top = Math.max(0, $("bar").getBoundingClientRect().bottom); p.style.top = top + "px"; p.style.maxHeight = "calc(100vh - " + top + "px)"; }
+    else { p.style.top = ""; p.style.maxHeight = ""; }
+    p.hidden = !open; $("fscrim").hidden = !open; $("tog").setAttribute("aria-expanded", open ? "true" : "false");
+    document.body.classList.toggle("locked", open);
+    if (open) { p.scrollTop = 0; } else { $("tog").focus(); }
+  }
+  $("tog").addEventListener("click", function () { openFilters($("fpanel").hidden); });
+  $("fdone").addEventListener("click", function () { openFilters(false); });
+  $("fclose").addEventListener("click", function () { openFilters(false); });
+  $("fscrim").addEventListener("click", function () { openFilters(false); });
+  $("fclear").addEventListener("click", function () { st.cat = {}; st.scale = {}; st.lead = {}; st.tag = {}; apply(); });
   var qt; $("q").addEventListener("input", function () { clearTimeout(qt); var v = this.value; qt = setTimeout(function () { st.q = v.trim(); apply(); }, 120); });
   $("clear-q").addEventListener("click", function () { st.q = ""; $("q").value = ""; apply(); $("q").focus(); });
   $("clear").addEventListener("click", function () { clearAll(); });
   $("empty-clear").addEventListener("click", function () { clearAll(); });
-  $("tog").addEventListener("click", function () { var open = $("bar").classList.toggle("open"); this.setAttribute("aria-expanded", open ? "true" : "false"); barH(); });
   document.addEventListener("keydown", function (ev) { if (ev.key === "/" && !/input|textarea|select/i.test(document.activeElement.tagName)) { ev.preventDefault(); $("q").focus(); } });
 
   // contents rows: clear the filters so the section is there, then go
   $("toc").addEventListener("click", function (ev) {
     var a = ev.target.closest("a[data-cat]"); if (!a) return;
     if (isFiltered()) clearAll();
-    $("bar").classList.remove("open");
   });
 
   // ---------- shortlist ----------
@@ -209,7 +247,7 @@
   $("p-close").addEventListener("click", closeOverlays);
   $("open-short").addEventListener("click", function () { $("drawer").hidden = true; CUR = null; showOverlay($("panel")); $("p-close").focus(); });
   document.addEventListener("keydown", function (ev) {
-    if (ev.key === "Escape") closeOverlays();
+    if (ev.key === "Escape") { if (!$("fpanel").hidden) { openFilters(false); return; } closeOverlays(); }
     if (CUR && ev.key === "ArrowRight") step(1);
     if (CUR && ev.key === "ArrowLeft") step(-1);
   });
