@@ -6,7 +6,7 @@ Static site, no build step, no server: `index.html`, `style.css`, `app.js`, the 
 
 ## Live
 
-https://wildcamelhypermedia.github.io/Wild-camel-Tech-Solutions-catalogue-2026-Compact-/ — GitHub Pages, from the `main` branch of this repository (root folder). Renaming the repository moves the address to `https://wildcamelhypermedia.github.io/<new name>/`.
+https://wildcamelhypermedia.github.io/Wild-camel-Tech-Solutions-catalogue-2026-Compact/ — GitHub Pages, from the `main` branch of this repository (root folder). Renaming the repository moves the address to `https://wildcamelhypermedia.github.io/<new name>/`.
 
 ## Publishing an update
 
