@@ -45,7 +45,7 @@
     var toc = "";
     DATA.families.forEach(function (f) {
       var n = f.cats.reduce(function (a, c) { return a + c.entries.length; }, 0);
-      toc += '<div class="col"><h3 class="fam-' + f.letter + '"><span><span class="sq"></span>' + esc(f.key) + "</span><small>" + esc(f.sub) + " &nbsp;·&nbsp; " + n + " ideas</small></h3>";
+      toc += '<div class="col"><h3 class="fam-' + f.letter + '"><span><span class="sq"></span>' + esc(f.key) + "</span><small>" + esc(f.sub) + " &nbsp;·&nbsp; " + n + " solutions</small></h3>";
       f.cats.forEach(function (c) {
         toc += '<a href="#' + catId(c.name) + '" data-cat="' + esc(c.name) + '"><img src="img/cards/' + c.entries[0].code + '.jpg" alt="" loading="lazy" width="640" height="400"><span class="t">' + esc(c.name) + '</span><span class="n">' + c.entries.length + "</span></a>";
       });
@@ -74,7 +74,7 @@
       f.cats.forEach(function (c) {
         h += '<section class="cat" id="' + catId(c.name) + '" data-cat="' + esc(c.name) + '"><div class="chead"><div>';
         h += '<span class="label mono fam-' + f.letter + '"><span class="sq"></span>' + esc(f.no) + " &nbsp;&nbsp;" + esc(f.key) + "</span>";
-        h += '<h3 class="head">' + esc(c.name) + '</h3><p class="blurb">' + esc(c.blurb) + '</p></div><span class="cnt" data-n>' + c.entries.length + " ideas</span></div>";
+        h += '<h3 class="head">' + esc(c.name) + '</h3><p class="blurb">' + esc(c.blurb) + '</p></div><span class="cnt" data-n>' + c.entries.length + " solutions</span></div>";
         h += '<div class="grid">';
         c.entries.forEach(function (e) {
           h += '<article class="card fam-' + e.family + '" data-code="' + e.code + '">';
@@ -99,12 +99,12 @@
     CARDS.forEach(function (el) { var e = BY[el.dataset.code], ok = matches(e); el.classList.toggle("hide", !ok); if (ok) VISIBLE.push(e); });
     document.querySelectorAll(".cat").forEach(function (sec) {
       var n = sec.querySelectorAll(".card:not(.hide)").length; sec.hidden = n === 0;
-      sec.querySelector("[data-n]").textContent = n + (n === 1 ? " idea" : " ideas");
+      sec.querySelector("[data-n]").textContent = n + (n === 1 ? " solution" : " solutions");
     });
     document.querySelectorAll(".family").forEach(function (f) { f.hidden = f.querySelectorAll(".cat:not([hidden])").length === 0; });
-    var countHTML = isFiltered() ? "<b>" + VISIBLE.length + "</b> of " + ALL.length + " ideas" : "<b>" + ALL.length + "</b> ideas";
+    var countHTML = isFiltered() ? "<b>" + VISIBLE.length + "</b> of " + ALL.length + " solutions" : "<b>" + ALL.length + "</b> solutions";
     $("count").innerHTML = countHTML; $("fcount").innerHTML = countHTML;
-    $("fdone").textContent = VISIBLE.length ? "Show " + VISIBLE.length + (VISIBLE.length === 1 ? " idea" : " ideas") : "Nothing matches";
+    $("fdone").textContent = VISIBLE.length ? "Show " + VISIBLE.length + (VISIBLE.length === 1 ? " solution" : " solutions") : "Nothing matches";
     $("empty").hidden = VISIBLE.length > 0;
     $("clear").hidden = !isFiltered();
     $("clear-q").hidden = !st.q;
