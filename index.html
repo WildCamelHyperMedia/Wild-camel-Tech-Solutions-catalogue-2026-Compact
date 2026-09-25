@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wild Camel — Activations</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ideas for spaces, events and screens: physical, hybrid and digital activations by Wild Camel, Dubai. One picture and one line each.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0A0C">
+<link rel="icon" href="img/ui/camel.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="cover" id="top">
+  <img class="logo" src="img/ui/logo.png" alt="Wild Camel Creative Production" width="900" height="520">
+  <div class="body wrap">
+    <div class="fams"><span class="fam-P">Physical</span><span class="dot">·</span><span class="fam-H">Hybrid</span><span class="dot">·</span><span class="fam-D">Digital</span></div>
+    <h1 class="head">Activations</h1>
+    <p class="lead"><span id="cover-count">191</span> ideas for spaces, events and screens. One picture and one line each.</p>
+    <p style="margin:26px 0 0"><a class="go" href="#catalogue" id="go">Browse the catalogue <span aria-hidden="true">↓</span></a></p>
+    <div class="cvrow"><span class="cv mono">Concept visual</span></div>
+    <div class="foot">
+      <span class="mono light">rudy@wildcamel.tv &nbsp;&nbsp;·&nbsp;&nbsp; www.wildcamel.tv</span>
+      <span class="mono light">Dubai &nbsp;—&nbsp; UAE</span>
+    </div>
+  </div>
+</header>
+
+<nav class="bar" id="bar" aria-label="Filters">
+  <div class="wrap">
+    <div class="row1">
+      <a class="brand" href="#top"><img src="img/ui/camel.png" alt="" width="266" height="423"><span>Wild Camel &nbsp;·&nbsp; Activations</span></a>
+      <label class="search"><span class="mono" style="font-size:10px">Search</span><input id="q" type="search" placeholder="Name, idea, place, code…" autocomplete="off" aria-label="Search the catalogue"><button class="clear-q" id="clear-q" type="button" aria-label="Clear search" hidden>×</button></label>
+      <span class="count" id="count"><b>191</b> of 191</span>
+      <button class="btn" id="open-short" type="button">Shortlist <span class="n" id="short-n">0</span></button>
+      <button class="btn tog" id="tog" type="button" aria-expanded="false" aria-controls="row2">Filters</button>
+      <button class="btn" id="clear" type="button" hidden>Clear</button>
+    </div>
+    <div class="row2" id="row2">
+      <div class="grp" data-group="fam"><span class="lab">Family</span>
+        <button class="chip fam-P" type="button" data-v="P" aria-pressed="false">Physical</button>
+        <button class="chip fam-H" type="button" data-v="H" aria-pressed="false">Hybrid</button>
+        <button class="chip fam-D" type="button" data-v="D" aria-pressed="false">Digital</button>
+      </div>
+      <div class="grp"><span class="lab">Category</span><span class="sel"><select id="cat" aria-label="Category"><option value="">All categories</option></select></span></div>
+      <div class="grp" data-group="scale"><span class="lab">Scale</span></div>
+      <div class="grp" data-group="lead"><span class="lab">Lead time</span>
+        <button class="chip" type="button" data-v="6" aria-pressed="false">Up to 6 weeks</button>
+        <button class="chip" type="button" data-v="10" aria-pressed="false">6–10 weeks</button>
+        <button class="chip" type="button" data-v="11" aria-pressed="false">Over 10 weeks</button>
+      </div>
+      <div class="grp" data-group="tag"><span class="lab">Status</span>
+        <button class="chip" type="button" data-v="S" aria-pressed="false">Signature concepts</button>
+        <button class="chip" type="button" data-v="F" aria-pressed="false">Proven formats</button>
+        <button class="chip" type="button" data-v="D" aria-pressed="false">Delivered work</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="section wrap" id="contents">
+    <div class="label"><span class="mono light"><span class="sq" style="color:var(--white)"></span>Contents</span><img class="emblem" src="img/ui/camel.png" alt="" width="266" height="423"></div>
+    <h2 class="head">Three families, sixteen categories</h2>
+    <div class="toc" id="toc"></div>
+  </section>
+
+  <section class="section wrap" id="production">
+    <div class="label"><span class="mono fam-M"><span class="sq"></span>04 &nbsp;&nbsp;Production</span><img class="emblem" src="img/ui/camel.png" alt="" width="266" height="423"></div>
+    <h2 class="head">The content comes from us</h2>
+    <div class="prod">
+      <div class="text">
+        <p>Every installation in this catalogue runs on content: the films on the screens, the figures in the holograms, the 3D built for anamorphic corners, the projection, the AR, the games and the sound. Our own studio designs, directs and produces all of it, so the installation and what plays on it are made together, by one team, under one creative direction.</p>
+        <ul class="services">
+          <li>Creative direction</li><li>Screen content</li><li>Holographic display content</li><li>3D for anamorphic screens</li><li>Projection mapping content</li><li>AR, VR &amp; game content</li><li>Film, CGI &amp; AI film</li><li>Photography &amp; key visuals</li><li>Sound, music &amp; voice</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tiles" id="tiles"></div>
+        <p class="note">Our own work &nbsp;·&nbsp; The hologram is a design visual</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="catalogue" aria-live="polite"></section>
+  <div class="empty" id="empty" hidden>
+    <p>Nothing matches these filters</p>
+    <button class="btn hot" type="button" id="empty-clear">Clear filters</button>
+  </div>
+
+  <footer class="foot wrap">
+    <span>Wild Camel &nbsp;·&nbsp; Activations</span>
+    <span><a href="mailto:rudy@wildcamel.tv">rudy@wildcamel.tv</a> &nbsp;·&nbsp; <a href="https://www.wildcamel.tv" rel="noopener">www.wildcamel.tv</a></span>
+    <span>Dubai &nbsp;—&nbsp; UAE</span>
+    <span>All pictures are concept visuals</span>
+  </footer>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-name" hidden>
+  <div class="pic"><img id="d-img" alt=""><span class="code" id="d-code"></span><span class="cv">Concept visual</span><button class="x" id="d-close" type="button" aria-label="Close">×</button></div>
+  <div class="in">
+    <div class="crumb" id="d-crumb"></div>
+    <h2 class="head" id="d-name"></h2>
+    <p class="line" id="d-line"></p>
+    <div><div class="lab">The moment</div><p class="moment" id="d-moment"></p></div>
+    <div><div class="lab">Best for</div><div class="best" id="d-best"></div></div>
+    <div class="facts"><div><div class="lab">Scale</div><b id="d-scale"></b></div><div><div class="lab">Lead time</div><b id="d-lead"></b></div><div><div class="lab">Status</div><b id="d-tag"></b></div></div>
+    <div class="client" id="d-client" hidden></div>
+    <div class="acts"><button class="btn" id="d-save" type="button">Add to shortlist</button><button class="btn" id="d-link" type="button">Copy link</button></div>
+  </div>
+  <div class="nav"><button class="btn" id="d-prev" type="button">← Previous</button><button class="btn" id="d-next" type="button">Next →</button></div>
+  <div class="foot2">Wild Camel &nbsp;·&nbsp; Activations &nbsp;·&nbsp; rudy@wildcamel.tv</div>
+</aside>
+
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="p-title" hidden>
+  <div class="top"><h2 class="head" id="p-title">Shortlist</h2><button class="x" id="p-close" type="button" aria-label="Close">×</button></div>
+  <ul id="p-list"></ul>
+  <p class="none" id="p-none">Nothing saved yet. Use the + on any card.</p>
+  <div class="acts">
+    <a class="btn hot" id="p-mail" href="#">Email to Wild Camel</a>
+    <button class="btn" id="p-copy" type="button">Copy as text</button>
+    <button class="btn" id="p-share" type="button">Copy share link</button>
+    <button class="btn" id="p-clear" type="button">Remove all</button>
+  </div>
+  <p class="hint">Saved in this browser. The share link carries the codes.</p>
+</aside>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="data/catalogue.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
